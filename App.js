@@ -1,37 +1,26 @@
-import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Pressable, Alert } from "react-native";
-import * as Sharing from "expo-sharing";
+import { StyleSheet, Text, View, Pressable, Alert, Share } from "react-native";
 
 export default function App() {
-  /*  if (!(await Sharing.isAvailableAsync())) {
-    alert(`Uh oh, sharing isn't available on your platform`);
-    return;
-  }
-  // console.log(getImageLocalAddress);
-  await Sharing.shareAsync(fileAddress, {
-    mimeType: "image/jpeg",
-    dialogTitle: "Share Your Result",
-  }); */
-
-  /*   if (!Sharing.isAvailableAsync()) {
-    Alert.alert("Ops!", "compartilhamento não está disponível");
-  }
-  await Sharing.shareAsync(fileAddress, {
-    mimeType: "image/jpeg",
-    dialogTitle: "compartilhe seu resultado",
-  }); */
-
   const compartilhe = async () => {
-    if (!(await Sharing.isAvailableAsync())) {
-      alert(`Uh oh, sharing isn't available on your platform`);
-      return;
+    try {
+      const result = await Share.share({
+        message:
+          "React Native | A framework for building native apps using React",
+      });
+
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      Alert.alert(error.message);
     }
-    // console.log(getImageLocalAddress);
-    await Sharing.shareAsync(fileAddress, {
-      mimeType: "image/jpeg",
-      dialogTitle: "Share Your Result",
-    });
   };
 
   return (
