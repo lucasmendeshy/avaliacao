@@ -1,33 +1,89 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Pressable, Alert, Share } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Platform,
+  TextInput,
+} from "react-native";
+import * as Calendar from "expo-calendar";
+import CalendarPicker from "react-native-calendar-picker";
 
 export default function App() {
-  const compartilhe = async () => {
-    try {
-      const result = await Share.share({
-        message:
-          "React Native | A framework for building native apps using React",
-      });
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [friendNameText, setFriendNameText] = useState("");
+  const startDate = selectedStartDate
+    ? selectedStartDate.format("AAAA-MM-DD").toString()
+    : "";
 
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
+  useEffect(() => {
+    (async () => {
+      const { status } = await Calendar.requestCalendarPermissionsAsync();
+      if (status === "granted") {
+        const calendars = await Calendar.getCalendarsAsync(
+          Calendar.EntityTypes.EVENT
+        );
+        console.log("Here are all your calendars:");
+        console.log({ calendars });
       }
-    } catch (error) {
-      Alert.alert(error.message);
+    })();
+  }, []);
+
+  async function getDefaultCalendarSource() {
+    const defaultCalendar = await Calendar.getDefaultCalendarAsync();
+    return defaultCalendar.source;
+  }
+
+  async function createCalendar() {
+    const defaultCalendarSource =
+      Platform.OS === "ios"
+        ? await getDefaultCalendarSource()
+        : { isLocalAccount: true, name: "Expo Calendar" };
+    const newCalendarID = await Calendar.createCalendarAsync({
+      title: "Expo Calendar",
+      color: "blue",
+      entityType: Calendar.EntityTypes.EVENT,
+      sourceId: defaultCalendarSource.id,
+      source: defaultCalendarSource,
+      name: "internalCalendarName",
+      ownerAccount: "personal",
+      accessLevel: Calendar.CalendarAccessLevel.OWNER,
+    });
+    console.log(`Your new calendar ID is: ${newCalendarID}`);
+  }
+
+  const addNewEvent = async () => {
+    try {
+      const calendarId = await createCalendar();
+
+      const res = await Calendar.createEventAsync(calendarId, {
+        endDate: getAppointementDate(startDate),
+        startDate: getAppointementDate(startDate),
+        title: "Happy Birthday buddy " + friendNameText,
+      });
+      Alert.alert("Event Created!");
+    } catch (e) {
+      console.log(e);
     }
   };
-
   return (
     <View style={estilos.container}>
       <StatusBar style="auto" />
-      <Pressable style={estilos.botao} onPress={compartilhe}>
-        <Text style={estilos.botaoTexto}>AVALIE</Text>
+      <TextInput
+        onChangeText={setFriendNameText}
+        value={friendNameText}
+        placeholder="Digite o nome do seu amigo"
+        style={estilos.input}
+      />
+      <View>
+        <CalendarPicker onDateChange={setSelectedStartDate} />
+        <Text style={estilos.dateText}>Aniversário: {startDate}</Text>
+      </View>
+
+      <Pressable style={estilos.botao} onPress={addNewEvent}>
+        <Text style={estilos.botaoTexto}>calendario</Text>
       </Pressable>
     </View>
   );
@@ -41,15 +97,23 @@ const estilos = StyleSheet.create({
     justifyContent: "center",
   },
   botao: {
-    padding: 14,
+    padding: 12,
+    borderRadius: 2,
     backgroundColor: "purple",
     width: "90%",
-    alignItems: "center",
-    borderRadius: 4,
   },
   botaoTexto: {
+    textAlign: "center",
     color: "white",
     fontSize: 16,
-    fontWeight: "bold",
+    textTransform: "uppercase",
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+  },
+  dateText: {
+    margin: 16,
   },
 });
