@@ -25,7 +25,7 @@ export default function App() {
         const calendars = await Calendar.getCalendarsAsync(
           Calendar.EntityTypes.EVENT
         );
-        console.log("Here are all your calendars:");
+        console.log("Aqui estão todos os seus calendários:");
         console.log({ calendars });
       }
     })();
@@ -51,7 +51,7 @@ export default function App() {
       ownerAccount: "personal",
       accessLevel: Calendar.CalendarAccessLevel.OWNER,
     });
-    console.log(`Your new calendar ID is: ${newCalendarID}`);
+    console.log(`Seu novo ID de calendário é: ${newCalendarID}`);
   }
 
   const addNewEvent = async () => {
@@ -61,9 +61,9 @@ export default function App() {
       const res = await Calendar.createEventAsync(calendarId, {
         endDate: getAppointementDate(startDate),
         startDate: getAppointementDate(startDate),
-        title: "Happy Birthday buddy " + friendNameText,
+        title: "Feliz aniversário colega " + friendNameText,
       });
-      Alert.alert("Event Created!");
+      Alert.alert("Evento Criado!");
     } catch (e) {
       console.log(e);
     }
