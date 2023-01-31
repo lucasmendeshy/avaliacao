@@ -12,10 +12,10 @@ import * as Calendar from "expo-calendar";
 import CalendarPicker from "react-native-calendar-picker";
 
 export default function App() {
-  const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [friendNameText, setFriendNameText] = useState("");
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
   const startDate = selectedStartDate
-    ? selectedStartDate.format("AAAA-MM-DD").toString()
+    ? selectedStartDate.format("AAAA-MM-DD").toString("pt-br")
     : "";
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export default function App() {
         startDate: getAppointementDate(startDate),
         title: "Feliz aniversário colega " + friendNameText,
       });
-      Alert.alert("Evento Criado!");
+      Alert.alert("Evento criado!");
     } catch (e) {
       console.log(e);
     }
