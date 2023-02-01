@@ -15,7 +15,7 @@ export default function App() {
   const [friendNameText, setFriendNameText] = useState("");
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const startDate = selectedStartDate
-    ? selectedStartDate.format("AAAA-MM-DD").toString("pt-br")
+    ? selectedStartDate.format("DD-MM-YYYY", "HH:mm:ss").toString("pt-br")
     : "";
 
   useEffect(() => {
@@ -68,6 +68,7 @@ export default function App() {
       console.log(e);
     }
   };
+
   return (
     <View style={estilos.container}>
       <StatusBar style="auto" />
@@ -78,8 +79,31 @@ export default function App() {
         style={estilos.input}
       />
       <View>
-        <CalendarPicker onDateChange={setSelectedStartDate} />
-        <Text style={estilos.dateText}>Aniversário: {startDate}</Text>
+        <CalendarPicker
+          weekdays={["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"]}
+          months={[
+            "Janeiro",
+            "Fevereiro",
+            "Março",
+            "Abril",
+            "Maio",
+            "Junho",
+            "Julho",
+            "Agosto",
+            "Setembro",
+            "Outubro",
+            "Novembro",
+            "Dezembro",
+          ]}
+          previousTitle="Anterior"
+          nextTitle="Próximo"
+          scaleFactor={375}
+          selectYearTitle="Selecione ano"
+          selectMonthTitle="Selecione o mês em "
+          onDateChange={setSelectedStartDate}
+        />
+        {/* <Text style={estilos.dateText}>Aniversário: {startDate}</Text> */}
+        <Text style={estilos.dateText}>Data de ínicio: {startDate}</Text>
       </View>
 
       <Pressable style={estilos.botao} onPress={addNewEvent}>
