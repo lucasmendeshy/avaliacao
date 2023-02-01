@@ -102,7 +102,6 @@ export default function App() {
           selectMonthTitle="Selecione o mês em "
           onDateChange={setSelectedStartDate}
         />
-        {/* <Text style={estilos.dateText}>Aniversário: {startDate}</Text> */}
         <Text style={estilos.dateText}>Data de ínicio: {startDate}</Text>
       </View>
 
