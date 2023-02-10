@@ -9,8 +9,10 @@ import {
   TextInput,
   Button,
   Pressable,
+  TouchableOpacity,
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function App() {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -24,17 +26,40 @@ export default function App() {
   };
 
   const handleConfirm = (date) => {
-    console.warn("A date has been picked: ", date);
+    console.warn("Uma data foi escolhida: ", date);
     hideDatePicker();
   };
 
+  {
+    /* <Button title="Show Date Picker" onPress={showDatePicker} /> */
+  }
   return (
     <>
       <SafeAreaView style={estilos.viewSafe}>
-        <Button title="Show Date Picker" onPress={showDatePicker} />
+        <Button title="" onPress={showDatePicker} />
+        <Pressable style={estilos.botaoDate} onPress={showDatePicker}>
+          <Text style={estilos.texto}>Selecione uma data</Text>
+          <AntDesign
+            name="calendar"
+            size={26}
+            color="black"
+            style={estilos.icon}
+          />
+        </Pressable>
+
+        <Pressable style={estilos.botaoHoras} onPress={showDatePicker}>
+          <Text style={estilos.texto}>Escolha a hora</Text>
+          <AntDesign
+            name="clockcircleo"
+            size={26}
+            color="black"
+            style={estilos.icon}
+          />
+        </Pressable>
+
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
-          mode="date"
+          mode="datetime"
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
         />
@@ -59,7 +84,39 @@ const estilos = StyleSheet.create({
   },
   texto: {
     fontSize: 16,
-    color: "white",
-    textTransform: "uppercase",
+    marginVertical: 15,
+    right: 10,
+  },
+  botaoDate: {
+    height: 50,
+    backgroundColor: "#F8F9FA",
+    paddingLeft: 20,
+    marginHorizontal: 20,
+    borderRadius: 8,
+    fontSize: 18,
+    borderWidth: 1,
+    shadowColor: "#171717",
+    shadowOffset: { left: -15, right: 15 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    marginVertical: 16,
+  },
+  botaoHoras: {
+    height: 50,
+    backgroundColor: "#F8F9FA",
+    paddingLeft: 20,
+    marginHorizontal: 20,
+    borderRadius: 8,
+    fontSize: 18,
+    borderWidth: 1,
+    shadowColor: "#171717",
+    shadowOffset: { left: -15, right: 15 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
+  icon: {
+    position: "absolute",
+    left: 335,
+    top: 12,
   },
 });
