@@ -7,23 +7,39 @@ import {
   View,
   Alert,
   TextInput,
+  Button,
+  Pressable,
 } from "react-native";
-import { SpeedDial } from "@rneui/themed";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 export default function App() {
-  const [text, setText] = useState("");
-  const [open, setOpen] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  const handleTextChange = (inputText) => {
-    if (inputText.length <= 250) {
-      setText(inputText);
-    }
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    console.warn("A date has been picked: ", date);
+    hideDatePicker();
   };
 
   return (
-    <SafeAreaView style={estilos.viewSafe}>
-      <StatusBar bartstyle="dark" />
-    </SafeAreaView>
+    <>
+      <SafeAreaView style={estilos.viewSafe}>
+        <Button title="Show Date Picker" onPress={showDatePicker} />
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="date"
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+        />
+      </SafeAreaView>
+    </>
   );
 }
 
@@ -32,5 +48,18 @@ const estilos = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 8,
+  },
+  dateComponente: {
+    width: 350,
+  },
+  botao: {
+    padding: 8,
+    backgroundColor: "blue",
+    borderRadius: 5,
+  },
+  texto: {
+    fontSize: 16,
+    color: "white",
+    textTransform: "uppercase",
   },
 });
