@@ -8,6 +8,8 @@ import {
   View,
   Alert,
   TextInput,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import Input from "./components/input";
 
@@ -23,17 +25,20 @@ export default function App() {
   return (
     <SafeAreaView style={estilos.viewSafe}>
       <StatusBar bartstyle="dark" />
-      <View>
-        <TextInput
-          style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
-          onChangeText={handleTextChange}
-          value={text}
-        />
-        {text.length > 250 && (
-          <Text style={{ color: "red" }}>Max 300 characters allowed</Text>
-        )}
-        <Text>{text.length} characters</Text>
-      </View>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null}>
+        <View>
+          <TextInput
+            placeholder="E-mail........."
+            style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
+            onChangeText={handleTextChange}
+            value={text}
+          />
+          {text.length > 250 && (
+            <Text style={{ color: "red" }}>Max 300 characters allowed</Text>
+          )}
+          <Text>{text.length} characters</Text>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
