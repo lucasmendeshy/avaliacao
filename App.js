@@ -23,21 +23,6 @@ export default function App() {
   return (
     <SafeAreaView style={estilos.viewSafe}>
       <StatusBar bartstyle="dark" />
-      <Text style={{ fontWeight: "bold", left: 20, marginVertical: 8 }}>
-        Descrição:
-      </Text>
-      <TextInput
-        multiline
-        placeholder="Descrição"
-        placeholderTextColor={"#black"}
-        value={text}
-        style={estilos.input}
-        onChangeText={handleTextChange}
-      />
-      {text.length > 250 && (
-        <Text style={{ color: "red" }}>Max 300 characters allowed</Text>
-      )}
-      <Text>{text.length} caracteres</Text>
     </SafeAreaView>
   );
 }
@@ -47,12 +32,5 @@ const estilos = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 8,
-  },
-  input: {
-    borderWidth: 1,
-    height: 100,
-    width: "90%",
-    left: 20,
-    padding: 12,
   },
 });
