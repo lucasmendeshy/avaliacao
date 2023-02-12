@@ -1,45 +1,62 @@
 import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Pressable, Alert } from "react-native";
-import * as StoreReview from "expo-store-review";
-import { Linking } from "react-native";
+import { StyleSheet, Text, View, Pressable, Alert, Platform } from "react-native";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function App() {
-  /* const [count, setCount] = useState(0);
-  const botao = () => setCount(prevCount => prevCount + 1); */
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+  const [text, setText] = useState('Data selecionada:');
 
-  const itunesItemId = 982107779;
-  // Abra a App Store do iOS no navegador -> redireciona para a App Store no iOS
-  Linking.openURL(
-    `https://apps.apple.com/app/apple-store/id${itunesItemId}?action=write-review`
-  );
-  // Abra a App Store do iOS diretamente
-  Linking.openURL(
-    `itms-apps://itunes.apple.com/app/viewContentsUserReviews/id${itunesItemId}?action=write-review`
-  );
-  /* 
-  const review = async () => {
-    if (StoreReview.isAvailableAsync()) {
-      await StoreReview.requestReview()
-        .then(function (response) {
-          Alert.alert("responda-me", response);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-  }; */
+  const onChange = (event, selectedDate) => {
+    const current = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+
+    let tempDate = new Date(currentDate);
+    let fDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
+    let fTime = 'Hours' + tempDate.getHours + ' | Minutes' + tempDate.getMinutes();
+    setText(fDate + '\n' + fTime);
+
+    console.log(fDate + '\n' + fTime);
+  }
+
+  const showMode = (currentMode) => {
+      setShow(true);
+      setMode(currentMode);
+  }
+
 
   return (
     <View style={estilos.container}>
       <StatusBar style="auto" />
-      <View style={estilos.countContainer}>
-        <Text>Count: </Text>
-      </View>
 
-      <Pressable style={estilos.botao} onPress={review}>
-        <Text style={estilos.botaoTexto}>AVALIE</Text>
-      </Pressable>
+      <Text>{text}</Text>
+      
+        <Pressable style={estilos.botao} onPress={() => showMode('date')}>
+          <Text style={estilos.botaoTexto}>Date</Text>
+        </Pressable>
+      
+      
+
+      
+        <Pressable style={estilos.botaooo} onPress={() => showMode('time')}>
+          <Text style={estilos.botaoTexto}>Time</Text>
+        </Pressable>
+      
+
+
+      {show && (<DateTimePicker
+        testID="dateTimePicker"
+        value={date}
+        mode={mode}
+        is24Hour={true}
+        display='default'
+        onChange={onChange}
+      
+      
+      />)}
     </View>
   );
 }
@@ -52,6 +69,14 @@ const estilos = StyleSheet.create({
     justifyContent: "center",
   },
   botao: {
+    padding: 14,
+    backgroundColor: "purple",
+    width: "90%",
+    alignItems: "center",
+    borderRadius: 4,
+    marginVertical: 30
+  },
+  botaooo: {
     padding: 14,
     backgroundColor: "purple",
     width: "90%",
