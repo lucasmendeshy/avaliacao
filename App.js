@@ -16,7 +16,11 @@ import { AntDesign } from "@expo/vector-icons";
 
 export default function App() {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
+  
+  const showDateTimePicker = () => {
+    setPickerMode("datetime");
+  };
+  
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -26,9 +30,10 @@ export default function App() {
   };
 
   const handleConfirm = (date) => {
-    console.warn("Uma data foi escolhida: ", date);
+    console.warn("Uma data e hora foi escolhida: ", date);
     hideDatePicker();
   };
+
 
   {
     /* <Button title="Show Date Picker" onPress={showDatePicker} /> */
@@ -36,7 +41,7 @@ export default function App() {
   return (
     <>
       <SafeAreaView style={estilos.viewSafe}>
-        <Button title="" onPress={showDatePicker} />
+       
         <Pressable style={estilos.botaoDate} onPress={showDatePicker}>
           <Text style={estilos.texto}>Selecione uma data</Text>
           <AntDesign
@@ -46,20 +51,23 @@ export default function App() {
             style={estilos.icon}
           />
         </Pressable>
+       
 
-        <Pressable style={estilos.botaoHoras} onPress={showDatePicker}>
-          <Text style={estilos.texto}>Escolha a hora</Text>
-          <AntDesign
-            name="clockcircleo"
-            size={26}
-            color="black"
-            style={estilos.icon}
-          />
-        </Pressable>
+    
 
+    <Text style={estilos.text}>
+         Data e hora selecionada:{isDatePickerVisible}
+    </Text>
+      
+       
+  
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
           mode="datetime"
+          locale="pt-br"
+          is24Hour={true}
+          cancelTextIOS="Cancelar"
+          confirmTextIOS="Confirme"
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
         />
@@ -119,4 +127,14 @@ const estilos = StyleSheet.create({
     left: 335,
     top: 12,
   },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+  text: {
+    textAlign: "left",
+    left: 25
+  }
 });
