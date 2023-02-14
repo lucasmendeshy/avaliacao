@@ -5,16 +5,19 @@ import {
   Text,
   View,
   Pressable,
-  Alert,
   Platform,
+  TextInput,
 } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function App() {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-  const [text, setText] = useState("Empty");
+  const [textData, setTextdata] = useState("Escolha uma data");
+  const [textHoras, setTexthoras] = useState("Escolha um horário");
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -24,14 +27,14 @@ export default function App() {
     let tempDate = new Date(currentDate);
     let fDate =
       tempDate.getDate() +
-      "/" +
+      " / " +
       (tempDate.getMonth() + 1) +
-      "/" +
+      " / " +
       tempDate.getFullYear();
+    setTextdata(fDate);
 
-    let fTime =
-      "Horas " + tempDate.getHours() + " : Minutos " + tempDate.getMinutes();
-    setText(fDate + "\n" + fTime);
+    let fTime = tempDate.getHours() + " : " + tempDate.getMinutes();
+    setTexthoras(fTime);
 
     console.log(fDate + "(" + fTime + ")");
   };
@@ -45,15 +48,27 @@ export default function App() {
     <View style={estilos.container}>
       <StatusBar style="auto" />
 
-      <Text>{text}</Text>
+      <View style={estilos.viewBotoes}>
+        <TextInput style={estilos.input} value={textData} placeholder="Data" />
+        <Pressable style={estilos.botao} onPress={() => showMode("date")}>
+          <Text style={estilos.botaoTexto}>
+            <AntDesign name="calendar" size={24} color="#E3BC40" />
+          </Text>
+        </Pressable>
+      </View>
 
-      <Pressable style={estilos.botao} onPress={() => showMode("date")}>
-        <Text style={estilos.botaoTexto}>Date</Text>
-      </Pressable>
-
-      <Pressable style={estilos.botao} onPress={() => showMode("time")}>
-        <Text style={estilos.botaoTexto}>DateTime</Text>
-      </Pressable>
+      <View style={estilos.viewBotoes}>
+        <TextInput
+          style={estilos.input}
+          value={textHoras}
+          placeholder="Horas"
+        />
+        <Pressable style={estilos.botao} onPress={() => showMode("time")}>
+          <Text style={estilos.botaoTexto}>
+            <MaterialCommunityIcons name="hours-24" size={24} color="#E3BC40" />
+          </Text>
+        </Pressable>
+      </View>
 
       {show && (
         <DateTimePicker
@@ -79,26 +94,32 @@ const estilos = StyleSheet.create({
   },
   botao: {
     padding: 14,
-    backgroundColor: "purple",
-    width: "90%",
+    backgroundColor: "#322727",
+    width: "18%",
     alignItems: "center",
-    borderRadius: 4,
+    borderRadius: 8,
     marginVertical: 30,
-  },
-  botaooo: {
-    padding: 14,
-    backgroundColor: "purple",
-    width: "90%",
-    alignItems: "center",
-    borderRadius: 4,
+    height: 50,
   },
   botaoTexto: {
     color: "white",
     fontSize: 16,
     fontWeight: "bold",
   },
-  countContainer: {
-    alignItems: "center",
-    padding: 10,
+  input: {
+    marginVertical: 30,
+    paddingLeft: 20,
+    height: 50,
+    backgroundColor: "#F8F9FA",
+    width: "65%",
+    marginHorizontal: 20,
+    borderRadius: 8,
+    fontSize: 18,
+    borderWidth: 1,
+  },
+  viewBotoes: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "flex-start",
   },
 });
