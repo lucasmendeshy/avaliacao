@@ -14,7 +14,8 @@ export default function App() {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-  const [text, setText] = useState("Empty");
+  const [textData, setTextdata] = useState("Empty");
+  const [textHoras, setTexthoras] = useState("Empty");
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -28,10 +29,11 @@ export default function App() {
       (tempDate.getMonth() + 1) +
       "/" +
       tempDate.getFullYear();
+    setTextdata(fDate);
 
     let fTime =
       "Horas " + tempDate.getHours() + " : Minutos " + tempDate.getMinutes();
-    setText(fDate + "\n" + fTime);
+    setTexthoras(fTime);
 
     console.log(fDate + "(" + fTime + ")");
   };
@@ -44,8 +46,8 @@ export default function App() {
   return (
     <View style={estilos.container}>
       <StatusBar style="auto" />
-
-      <Text>{text}</Text>
+      <Text>{textData}</Text>
+      <Text>{textHoras}</Text>
 
       <Pressable style={estilos.botao} onPress={() => showMode("date")}>
         <Text style={estilos.botaoTexto}>Date</Text>
