@@ -14,10 +14,10 @@ export default function App() {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-  const [text, setText] = useState("Data selecionada:");
+  const [text, setText] = useState("Empty");
 
   const onChange = (event, selectedDate) => {
-    const current = selectedDate || date;
+    const currentDate = selectedDate || date;
     setShow(Platform.OS === "ios");
     setDate(currentDate);
 
@@ -28,11 +28,12 @@ export default function App() {
       (tempDate.getMonth() + 1) +
       "/" +
       tempDate.getFullYear();
+
     let fTime =
-      "Hours" + tempDate.getHours + " | Minutes" + tempDate.getMinutes();
+      "Horas " + tempDate.getHours() + " : Minutos " + tempDate.getMinutes();
     setText(fDate + "\n" + fTime);
 
-    console.log(fDate + "\n" + fTime);
+    console.log(fDate + "(" + fTime + ")");
   };
 
   const showMode = (currentMode) => {
@@ -46,14 +47,14 @@ export default function App() {
 
       <Text>{text}</Text>
 
-      <Pressable style={estilos.botao} onPress={() => showMode("datetime")}>
+      <Pressable style={estilos.botao} onPress={() => showMode("date")}>
         <Text style={estilos.botaoTexto}>Date</Text>
       </Pressable>
 
-      {/* <Pressable style={estilos.botaooo} onPress={() => showMode("time")}>
-        <Text style={estilos.botaoTexto}>Time</Text>
+      <Pressable style={estilos.botao} onPress={() => showMode("time")}>
+        <Text style={estilos.botaoTexto}>DateTime</Text>
       </Pressable>
- */}
+
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
@@ -79,7 +80,7 @@ const estilos = StyleSheet.create({
   botao: {
     padding: 14,
     backgroundColor: "purple",
-    width: "20%",
+    width: "90%",
     alignItems: "center",
     borderRadius: 4,
     marginVertical: 30,
